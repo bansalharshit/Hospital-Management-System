@@ -2,18 +2,20 @@ package com.harshit.HospitalManagementApplication.entity;
 
 import com.harshit.HospitalManagementApplication.entity.type.BloodGroupType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @ToString
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "patient",uniqueConstraints = {
        //@UniqueConstraint(name = "unique_patient_email",columnNames = {"email"}),
         @UniqueConstraint(name="unique_patient_name_birthdate",columnNames = {"name","birthDate"})
@@ -44,4 +46,12 @@ public class Patient {
 
     @Enumerated(EnumType.STRING)
     private BloodGroupType bloodGroup;
+
+    @OneToOne
+    @JoinColumn(name = "patient_insurance_id") // those who has fk or has join column act as Owner side
+    private Insurance insurance;
+
+    @OneToMany(mappedBy = "patient")
+    private List<Appointment> appointments;
+
 }
