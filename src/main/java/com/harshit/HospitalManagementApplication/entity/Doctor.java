@@ -5,6 +5,10 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -12,7 +16,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class Doctor {
 
     @Id
@@ -29,6 +32,12 @@ public class Doctor {
     private String email;
 
     @CreationTimestamp
-    @Column(nullable = false,updatable = false)
+    @Column(nullable = true,updatable = false)
     private LocalDateTime createdAt;
+
+    @ManyToMany(mappedBy = "doctors")
+    private Set<Department> departments = new HashSet<>();
+
+    @OneToMany(mappedBy = "doctor")
+    private List<Appointment> appointments = new ArrayList<>();
 }

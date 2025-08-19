@@ -12,7 +12,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Department {
 
     @Id
@@ -26,5 +25,10 @@ public class Department {
     private Doctor headDoctor;
 
     @ManyToMany
+    @JoinTable(
+            name = "my_dpt_doctors",
+            joinColumns = @JoinColumn(name = "dpt_id"),
+            inverseJoinColumns = @JoinColumn(name = "doctor_id")
+    )
     private Set<Doctor> doctors= new HashSet<>();
 }

@@ -29,11 +29,11 @@ public class PatientTest {
     @Test
     public void testPatientRepository()
     {
-        List<Patient> patientList = patientRepository.findAll();
+        List<Patient> patientList = patientRepository.findAllPatientsWithAppointment();// if we use findALl() then we have to face problem of N+1 quries and to solve this problem we will make our custom function and then write jpql query on it
         System.out.println(patientList);
 
-        Patient patient = new Patient();
-        patientRepository.save(patient);
+//        Patient patient = new Patient();
+//        patientRepository.save(patient);
     }
 
     @Test

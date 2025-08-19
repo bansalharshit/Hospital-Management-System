@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class Insurance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

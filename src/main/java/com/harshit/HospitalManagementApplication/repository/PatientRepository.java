@@ -70,4 +70,9 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
 
     @Query(value = "SELECT * from patient",nativeQuery = true)
     Page<Patient> findAllPatientsUsingPage(Pageable pageable);
+
+    @Query("SELECT p FROM Patient p LEFT JOIN FETCH p.appointments") // this query is sufficient if you FETCH Type is Lazy over doctor column inside Appointment Class
+   // @Query("SELECT p FROM Patient p LEFT JOIN FETCH p.appointments a LEFT JOIN FETCH a.doctor")// if you do not want to use lazy loading over doctor column inside appointment Class
+    List<Patient>findAllPatientsWithAppointment();
+
 }
