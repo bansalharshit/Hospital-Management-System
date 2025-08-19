@@ -1,5 +1,7 @@
 package com.harshit.HospitalManagementApplication.service;
 
+import com.harshit.HospitalManagementApplication.dto.AppointmentResponseDto;
+import com.harshit.HospitalManagementApplication.dto.CreateAppointmentRequestDto;
 import com.harshit.HospitalManagementApplication.entity.Appointment;
 import com.harshit.HospitalManagementApplication.entity.Doctor;
 import com.harshit.HospitalManagementApplication.entity.Patient;
@@ -8,6 +10,7 @@ import com.harshit.HospitalManagementApplication.repository.DoctorRepository;
 import com.harshit.HospitalManagementApplication.repository.PatientRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.print.Doc;
@@ -19,19 +22,27 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
-
+    private final ModelMapper modelMapper;
     @Transactional
-    public Appointment createNewAppointment(Appointment appointment, Long doctorId, Long patientId)
+    public AppointmentResponseDto createNewAppointment(CreateAppointmentRequestDto createAppointmentRequestDto)
     {
+        Long doctorId = createAppointmentRequestDto.getDoctorId();
+        Long patientId = createAppointmentRequestDto.getPatientId();
+
         Doctor doctor =doctorRepository.findById(doctorId).orElseThrow(()->new IllegalArgumentException("Doctor not found withh id :"+doctorId));
         Patient patient = patientRepository.findById(patientId).orElseThrow(()->new IllegalArgumentException("Patient Not Found with Id :"+patientId));
 
-        if(appointment.getId()!=null) throw  new IllegalArgumentException("Appointment Should not have id :"+appointment.getId());
+        Appointment appointment = Appointment.builder().
+                reason(createAppointmentRequestDto.getReason())
+                .appointmentTime(createAppointmentRequestDto.
+                        getAppointmentTime()).
+                build();
         appointment.setPatient(patient);
         appointment.setDoctor(doctor);
 
         patient.getAppointments().add(appointment); // to maintain consistency
-      return  appointmentRepository.save(appointment);
+      appointment=appointmentRepository.save(appointment);
+      return modelMapper.map(appointment,AppointmentResponseDto.class);
 
     }
 

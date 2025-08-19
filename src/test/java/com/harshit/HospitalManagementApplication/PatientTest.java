@@ -1,6 +1,7 @@
 package com.harshit.HospitalManagementApplication;
 
 import com.harshit.HospitalManagementApplication.dto.BloodGroupCountResponseEntity;
+import com.harshit.HospitalManagementApplication.dto.PatientResponseDto;
 import com.harshit.HospitalManagementApplication.entity.Patient;
 import com.harshit.HospitalManagementApplication.entity.type.BloodGroupType;
 import com.harshit.HospitalManagementApplication.repository.PatientRepository;
@@ -39,7 +40,7 @@ public class PatientTest {
     @Test
     public void testPatientMethods()
     {
-        Patient patient = patientService.getPatientById(1L);
+       // PatientResponseDto patient = patientService.getPatientById(1L);
         Patient patient1 = patientRepository.findById(1L).orElseThrow(()->new EntityNotFoundException("Patient Not Found With Id : 1"));
         System.out.println(patient1);
     }
